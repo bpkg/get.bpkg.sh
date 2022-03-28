@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
-#<html>
-#  <head>
-#    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-#    <title>get.bpkg.sh</title>
-#    <style>body { background: rgba(245, 245, 245, 1); } pre, code { background: rgba(54, 57, 61, 1); }</style>
-#    <link rel="stylesheet" href="https://unpkg.com/highlight.js@9.12.0/styles/default.css">
-#    <script src="https://unpkg.com/highlight.js@9.12.0/lib/highlight.js"></script><script>hljs.initHighlightingOnLoad()</script>
-#  </head>
-#  <body>
-##   <h2>get.bpkg.sh</h2>
+#<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /><title>get.bpkg.sh</title></head><body>: bpkg(1) installer<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css"><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js"></script><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/languages/shell.min.js"></script><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/languages/bash.min.js"></script><script> hljs.initHighlightingOnLoad()</script><style>body { font-family: monospace; background: rgba(245, 245, 245, 1); } footer { font-size: 0.65rem; } pre, code { border-radius: 4px; font-size: 1.1rem; color: #F0F0F0 !important; background: rgb(11 12 14) !important; }</style><h2>
+## get.bpkg.sh</h2><h3>
+### USAGE</h2><pre><code code="shell">curl get.bpkg.sh | bash</code></pre><h3>
 
-###  <h3>USAGE</h2><pre><code code="language-bash">curl get.bpkg.sh | bash</code></pre>
-
-###  <h3>CODE</h2><pre><code code="language-bash">
+### CODE</h2><pre><code code="bash">
 declare GIT_REMOTE=${GIT_REMOTE:-"https://raw.githubusercontent.com"}
 declare GIT_BRANCH=${GIT_BRANCH:-"master"}
 declare SETUP_URL=${SETUP_URL:-""}
@@ -41,5 +32,6 @@ else
 fi
 
 exit $?
-# See https://github.com/bpkg/bpkg </code></pre>
-#### Copyright (c) 2014-2022 bpkg.sh #### </body></html>
+
+## See https://github.com/bpkg/bpkg for more information about the bpkg(1) command line tool. </code></pre><footer>
+#### Copyright (c) 2014-2022 <a href="https://bpkg.sh">bpkg.sh</a> #### </footer></body></html>
