@@ -5,6 +5,32 @@
 #    <title>get.bpkg.sh</title>
 #  </head>
 #  <body>
-curl -Lo- "https://raw.githubusercontent.com/bpkg/bpkg/master/setup.sh" | bash
+#    <code>
+declare GIT_REMOTE=${GIT_REMOTE:-"https://raw.githubusercontent.com"}
+declare GIT_BRANCH=${GIT_BRANCH:-"master"}
+
+if (( GIT_BRANCH == 0 )); then
+  declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/setup.sh"
+else
+  declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/$GIT_BRANCH/setup.sh"
+fi
+
+if command curl >/dev/null 2>&1; then
+  curl -Lo- "$@" "$SETUP_URL" | bash
+elif command wget >/dev/null 2>&1; then
+  wget -O - "$SETUP_URL" "$@" | bash
+elif command aria2c >/dev/null 2>&1; then
+  if aria2c -o bpkg-setup.sh "$SETUP_URL"  "$@"; then
+    bash bpkg-setup.sh
+  fi
+elif [ -x "$REQUET_FALLBACK_COMMAND" ]; then
+  "$REQUET_FALLBACK_COMMAND" "$@" "$SETUP_URL"
+else
+  echo >&2 "error: Could not fetch '$SETUP_URL'"
+  exit 1
+fi
+
+exit $?
+#    </code>
 #  </body>
 #</html>
