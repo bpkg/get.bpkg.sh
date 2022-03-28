@@ -1,0 +1,8 @@
+{
+  "name": "get.bpkg.sh",
+  "version": "master",
+  "description": "An installer script living at the https://get.bpkg.sh for bpkg",
+  "global": "1",
+  "install": "install -b index.html ${PREFIX:-/usr/local}/bin/get.bpkg.sh"
+}
+
