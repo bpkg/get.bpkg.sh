@@ -3,46 +3,31 @@
 #  <head>
 #    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 #    <title>get.bpkg.sh</title>
-#    <style>
-#      body {
-#        background: rgba(245, 245, 245, 1);
-#      }
-#
-#      pre, code {
-#        background: rgba(54, 57, 61, 1);
-#      }
-#    </style>
+#    <style>body { background: rgba(245, 245, 245, 1); } pre, code { background: rgba(54, 57, 61, 1); }</style>
 #    <link rel="stylesheet" href="https://unpkg.com/highlight.js@9.12.0/styles/default.css">
-#    <script src="https://unpkg.com/highlight.js@9.12.0/lib/highlight.js"></script>
-#    <script>hljs.highlightAll();</script>
+#    <script src="https://unpkg.com/highlight.js@9.12.0/lib/highlight.js"></script><script>hljs.highlightAll();</script>
 #  </head>
-#  <body>
-#    <h2>get.bpkg.sh</h2>
-#
-#    <h3>USAGE</h2>
-#    <pre>
-#      <code code="language-bash">
-#        curl get.bpkg.sh | bash
-#      </code>
-#    </pre>
-#
-#    <h3>CODE</h2>
-#    <pre>
-#      <code code="language-bash">
+#  <body><h2>get.bpkg.sh</h2>
+#    <h3>USAGE</h2><pre><code code="language-bash">curl get.bpkg.sh | bash</code></pre>
+
+#    <h3>CODE</h2><pre><code code="language-bash">
 declare GIT_REMOTE=${GIT_REMOTE:-"https://raw.githubusercontent.com"}
 declare GIT_BRANCH=${GIT_BRANCH:-"master"}
+declare SETUP_URL=${SETUP_URL:-""}
 
-if (( GIT_BRANCH == 0 )); then
-  declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/setup.sh"
-else
-  declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/$GIT_BRANCH/setup.sh"
+if [ -z "$SETUP_URL" ]; then
+  if [ -n "$GIT_BRANCH_EMPTY" ]; then
+    declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/setup.sh"
+  else
+    declare SETUP_URL="$GIT_REMOTE/bpkg/bpkg/$GIT_BRANCH/setup.sh"
+  fi
 fi
 
-if command curl >/dev/null 2>&1; then
+if which curl >/dev/null 2>&1; then
   curl -Lo- "$@" "$SETUP_URL" | bash
-elif command wget >/dev/null 2>&1; then
+elif which wget >/dev/null 2>&1; then
   wget -O - "$SETUP_URL" "$@" | bash
-elif command aria2c >/dev/null 2>&1; then
+elif which aria2c >/dev/null 2>&1; then
   if aria2c -o bpkg-setup.sh "$SETUP_URL"  "$@"; then
     bash bpkg-setup.sh
   fi
@@ -54,7 +39,5 @@ else
 fi
 
 exit $?
-#      </code>
-#    </pre>
-#  </body>
-#</html>
+#      </code></pre>
+#</body></html>
