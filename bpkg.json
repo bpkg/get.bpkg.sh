@@ -3,5 +3,8 @@
   "version": "master",
   "description": "An installer script living at the https://get.bpkg.sh for bpkg",
   "global": "1",
-  "install": "install -b index.html ${PREFIX:-/usr/local}/bin/get.bpkg.sh"
+  "install": "install -b index.html ${PREFIX:-/usr/local}/bin/get.bpkg.sh",
+  "commands": {
+    "server": "command serve . -p ${PORT:-3000} || command budo . -p ${PORT:-3000}"
+  }
 }
