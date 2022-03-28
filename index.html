@@ -7,10 +7,12 @@
 #    <link rel="stylesheet" href="https://unpkg.com/highlight.js@9.12.0/styles/default.css">
 #    <script src="https://unpkg.com/highlight.js@9.12.0/lib/highlight.js"></script><script>hljs.initHighlightingOnLoad()</script>
 #  </head>
-#  <body><h2>get.bpkg.sh</h2>
-#    <h3>USAGE</h2><pre><code code="language-bash">curl get.bpkg.sh | bash</code></pre>
+#  <body>
+##   <h2>get.bpkg.sh</h2>
 
-#    <h3>CODE</h2><pre><code code="language-bash">
+###  <h3>USAGE</h2><pre><code code="language-bash">curl get.bpkg.sh | bash</code></pre>
+
+###  <h3>CODE</h2><pre><code code="language-bash">
 declare GIT_REMOTE=${GIT_REMOTE:-"https://raw.githubusercontent.com"}
 declare GIT_BRANCH=${GIT_BRANCH:-"master"}
 declare SETUP_URL=${SETUP_URL:-""}
@@ -39,5 +41,5 @@ else
 fi
 
 exit $?
-#      </code></pre>
-#</body></html>
+# See https://github.com/bpkg/bpkg </code></pre>
+#### Copyright (c) 2014-2022 bpkg.sh #### </body></html>
