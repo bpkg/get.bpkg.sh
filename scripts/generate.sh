@@ -26,14 +26,15 @@ for opt in "$@"; do
       ;;
 
     -h|--help)
-      usage
+      echo "usage: generate.sh [-f|--force]"
+      echo "   or: bpkg run generate [-f|--force]"
       return 0
       ;;
   esac
 done
 
-for tag in $(bpkg run list-bpkg-tags); do
   if [ -z "$latest" ]; then
+for tag in $(bpkg run list-bpkg-tags); do
     bpkg_info "Latest tag is '$tag'"
     latest="$tag"
   fi
