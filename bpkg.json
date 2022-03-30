@@ -5,6 +5,14 @@
   "global": "1",
   "install": "install -b index.html ${PREFIX:-/usr/local}/bin/get.bpkg.sh",
   "commands": {
-    "server": "command serve . -p ${PORT:-3000} || command budo . -p ${PORT:-3000}"
+    "server": "command serve . -p ${PORT:-3000} || command budo . -p ${PORT:-3000}",
+    "generate": "./scripts/generate.sh",
+    "list-bpkg-tags": "curl -Lso- https://api.github.com/repos/bpkg/bpkg/tags?nonce=$(date +%s) | bpkg json -b | grep name | awk '{ print $2 }' | tr -d '\"'"
+  },
+  "scripts": [
+    "scripts/generate.sh"
+  ],
+  "dependencies": {
+    "jwerle/mush": "0.1.0"
   }
 }
