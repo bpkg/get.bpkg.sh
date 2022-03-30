@@ -14,10 +14,9 @@ if ! test -d "$BPKG_PACKAGE_ROOT"; then
   exit 1
 fi
 
+declare should_force_generate=0
 declare template="$BPKG_PACKAGE_ROOT/_template"
 declare latest=""
-
-let should_force_generate=0
 
 for opt in "$@"; do
   case "$opt" in
@@ -28,19 +27,15 @@ for opt in "$@"; do
     -h|--help)
       echo "usage: generate.sh [-f|--force]"
       echo "   or: bpkg run generate [-f|--force]"
-      return 0
+      exit 0
       ;;
   esac
 done
 
-  if [ -z "$latest" ]; then
 for tag in $(bpkg run list-bpkg-tags); do
-    bpkg_info "Latest tag is '$tag'"
+  if [ -z "$latest" ]; then
     latest="$tag"
   fi
-
-  export tag
-  export latest
 
   ## create a directory with tag as name and store script as `index.html`
   declare dirname="$BPKG_PACKAGE_ROOT/$tag"
@@ -52,6 +47,9 @@ for tag in $(bpkg run list-bpkg-tags); do
     mkdir -p "$dirname"
     rm -rf "$output"
 
+    export tag
+    export latest
+
     ## output from template
     cat < "$template" | mush > "$output"
 
@@ -62,10 +60,14 @@ for tag in $(bpkg run list-bpkg-tags); do
 done
 
 if [ -n "$latest" ]; then
+  bpkg_info "Latest tag is '$latest'"
+
   ## create a directory with tag as name and store script as `index.html`
-  declare dirname="${BPKG_PACKAGE_ROOT:-.}/$tag"
+  declare dirname="${BPKG_PACKAGE_ROOT:-.}/$latest"
   declare output="$dirname/index.html"
 
-  bpkg_warn "Copying latest ('$latest') to root as 'index.html'"
-  cp -f "$output" "$BPKG_PACKAGE_ROOT/index.html"
+  if ! test -f "$output" || (( should_force_generate == 1 )); then
+    bpkg_warn "Copying latest ('$latest') to root as 'index.html'"
+    cp -f "$output" "$BPKG_PACKAGE_ROOT/index.html"
+  fi
 fi
