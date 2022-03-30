@@ -42,13 +42,17 @@ for tag in $(bpkg run list-bpkg-tags); do
   declare output="$dirname/index.html"
 
   if ! test -f "$output" || (( should_force_generate == 1 )); then
-    ## clean up existing
-    bpkg_warn "Purging '$output'"
     mkdir -p "$dirname"
-    rm -rf "$output"
+
+    if test -f "$output"; then
+      ## clean up existing
+      bpkg_warn "Purging '$output'"
+      rm -rf "$output"
+    fi
 
     export tag
     export latest
+    export tagpath="/$tag"
 
     ## output from template
     cat < "$template" | mush > "$output"
@@ -63,11 +67,46 @@ if [ -n "$latest" ]; then
   bpkg_info "Latest tag is '$latest'"
 
   ## create a directory with tag as name and store script as `index.html`
-  declare dirname="${BPKG_PACKAGE_ROOT:-.}/$latest"
+  declare dirname="$BPKG_PACKAGE_ROOT/$latest"
   declare output="$dirname/index.html"
 
   if ! test -f "$output" || (( should_force_generate == 1 )); then
-    bpkg_warn "Copying latest ('$latest') to root as 'index.html'"
-    cp -f "$output" "$BPKG_PACKAGE_ROOT/index.html"
+    if test -f "$output"; then
+      ## clean up existing
+      bpkg_warn "Purging '$output'"
+      rm -rf "$output"
+    fi
+
+    export tag="$latest"
+    export latest
+    export tagpath=""
+
+    ## output from template
+    cat < "$template" | mush > "$output"
+
+    ## ensure it is executable
+    chmod +x "$output"
+    bpkg_info "Generated '$tag'"
+  fi
+
+  if ! test -f "$BPKG_PACKAGE_ROOT/latest" || (( should_force_generate == 1 )); then
+    declare dirname="$BPKG_PACKAGE_ROOT/latest"
+    declare output="$dirname/index.html"
+
+    if test -f "$output"; then
+      ## clean up existing
+      bpkg_warn "Purging '$output'"
+      rm -rf "$output"
+    fi
+
+    export tag="$latest"
+    export latest
+    export tagpath="/latest"
+
+    ## output from template
+    cat < "$template" | mush > "$output"
+    ## ensure it is executable
+    chmod +x "$output"
+    bpkg_info "Generated 'latest'"
   fi
 fi
