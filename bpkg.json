@@ -6,8 +6,10 @@
   "install": "install -b index.html ${PREFIX:-/usr/local}/bin/get.bpkg.sh",
   "commands": {
     "server": "command serve . -p ${PORT:-3000} || command budo . -p ${PORT:-3000}",
-    "generate": "./scripts/generate.sh",
-    "list-bpkg-tags": "curl -Lso- https://api.github.com/repos/bpkg/bpkg/tags?nonce=$(date +%s) | bpkg json -b | grep name | awk '{ print $2 }' | tr -d '\"'"
+    "generate": "./scripts/generate.sh $@",
+
+    "list-bpkg-tags": "curl -Lnso- https://api.github.com/repos/bpkg/bpkg/tags?nonce=$(date +%s)'&'page=$1 | bpkg json -b | grep name | awk '{ print $2 }' | tr -d '\"'",
+    "echo-url": "echo https://api.github.com/repos/bpkg/bpkg/tags?nonce=$(date +%s)'&'page=$2"
   },
   "scripts": [
     "scripts/generate.sh"

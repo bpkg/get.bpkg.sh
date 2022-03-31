@@ -32,7 +32,44 @@ for opt in "$@"; do
   esac
 done
 
-for tag in $(bpkg run list-bpkg-tags); do
+list_tags () {
+  local page=1
+  while true; do
+    # shellcheck disable=SC2207
+    local tags=($(bpkg run list-bpkg-tags "$page"))
+
+    (( page++ ))
+
+    if (( ${#tags[@]} == 0 )); then
+      break
+    fi
+
+    for tag in "${tags[@]}"; do
+      echo "$tag"
+    done
+  done
+  return $?
+}
+
+
+# shellcheck disable=SC2207
+declare -a tags=($(list_tags))
+
+declare tagshtml=""
+tagshtml+="<h2>### <a name=\"tags\" href=\"#tags\">TAGS</a></h2>"
+tagshtml+="<ul>"
+for tag in "${tags[@]}"; do
+  tagshtml+="<li>"
+  tagshtml+="<a href="/$tag">$tag</a>"
+  tagshtml+="</li>"
+done
+tagshtml+="</ul>"
+
+echo "$tagshtml"
+
+export tagshtml
+
+for tag in "${tags[@]}"; do
   if [ -z "$latest" ]; then
     latest="$tag"
   fi
@@ -67,7 +104,7 @@ if [ -n "$latest" ]; then
   bpkg_info "Latest tag is '$latest'"
 
   ## create a directory with tag as name and store script as `index.html`
-  declare dirname="$BPKG_PACKAGE_ROOT/$latest"
+  declare dirname="$BPKG_PACKAGE_ROOT"
   declare output="$dirname/index.html"
 
   if ! test -f "$output" || (( should_force_generate == 1 )); then
