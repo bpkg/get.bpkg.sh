@@ -14,21 +14,29 @@ if ! test -d "$BPKG_PACKAGE_ROOT"; then
   exit 1
 fi
 
-declare should_force_generate=0
+declare should_force=0
+declare no_commit=0
+declare no_push=0
+
 declare template="$BPKG_PACKAGE_ROOT/_template"
 declare latest=""
 
 for opt in "$@"; do
   case "$opt" in
     -f|--force)
-      should_force_generate=1
+      should_force=1
       ;;
 
-    -h|--help)
-      echo "usage: generate.sh [-f|--force]"
-      echo "   or: bpkg run generate [-f|--force]"
-      exit 0
+    --no-commit)
+      no_commit=1
       ;;
+
+    -h|--help) {
+      cli_args="[-f|--force] [--no-commit] [--no-push]"
+      echo "usage: generate.sh $cli_args"
+      echo "   or: bpkg run generate $cli_args"
+      exit 0
+    } ;;
   esac
 done
 
@@ -78,7 +86,7 @@ for tag in "${tags[@]}"; do
   declare dirname="$BPKG_PACKAGE_ROOT/$tag"
   declare output="$dirname/index.html"
 
-  if ! test -f "$output" || (( should_force_generate == 1 )); then
+  if ! test -f "$output" || (( should_force == 1 )); then
     mkdir -p "$dirname"
 
     if test -f "$output"; then
@@ -107,7 +115,7 @@ if [ -n "$latest" ]; then
   declare dirname="$BPKG_PACKAGE_ROOT"
   declare output="$dirname/index.html"
 
-  if ! test -f "$output" || (( should_force_generate == 1 )); then
+  if ! test -f "$output" || (( should_force == 1 )); then
     if test -f "$output"; then
       ## clean up existing
       bpkg_warn "Purging '$output'"
@@ -126,7 +134,7 @@ if [ -n "$latest" ]; then
     bpkg_info "Generated '$tag'"
   fi
 
-  if ! test -f "$BPKG_PACKAGE_ROOT/latest" || (( should_force_generate == 1 )); then
+  if ! test -f "$BPKG_PACKAGE_ROOT/latest" || (( should_force == 1 )); then
     declare dirname="$BPKG_PACKAGE_ROOT/latest"
     declare output="$dirname/index.html"
 
@@ -145,5 +153,17 @@ if [ -n "$latest" ]; then
     ## ensure it is executable
     chmod +x "$output"
     bpkg_info "Generated 'latest'"
+  fi
+fi
+
+if (( no_commit == 0 )); then
+  git add .
+  git commit -am"chore(): generate $latest"
+  if (( no_push == 0 )); then
+    if (( should_force == 1 )); then
+      git push origin master -f
+    else
+      git push origin master
+    fi
   fi
 fi
