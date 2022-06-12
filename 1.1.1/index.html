@@ -2,7 +2,7 @@
 #<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /><title>get.bpkg.sh</title></head><body>: bpkg(1) installer <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" /><link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/styles/default.min.css"><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/highlight.min.js"></script><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/languages/shell.min.js"></script><script src="https://unpkg.com/@highlightjs/cdn-assets@11.5.0/languages/bash.min.js"></script><script> hljs.initHighlightingOnLoad()</script><style>body { font-family: monospace; background: rgba(245, 245, 245, 1); } footer { font-size: 0.65rem; } a { color: inherit; } a[name] { text-decoration: none; } pre, code { border-radius: 4px; font-size: 1.1rem; color: #F0F0F0 !important; background: rgb(11 12 14) !important; } .github-fork-ribbon:before { background-color: rgb(11 12 14); } </style> <a class="github-fork-ribbon" href="https://github.com/bpkg/bpkg" data-ribbon="Contribute on GitHub" title="Contribute on GitHub">Contribute on GitHub</a> <h2>
 ## get.bpkg.sh</h2><span>Use this self hosted script to install the <code>bpkg(1)</code> bash package manager.</span><h3>
 
-### <a name="usage" href="#usage">USAGE</a></h2><pre><code code="shell">curl -Lo- get.bpkg.sh/1.0.4 | bash</code></pre><h3>
+### <a name="usage" href="#usage">USAGE</a></h2><pre><code code="shell">curl -Lo- get.bpkg.sh/1.1.1 | bash</code></pre><h3>
 
 ### <a name="code" href="#code">CODE</a></h2><pre><code code="bash">
 ##
@@ -11,7 +11,7 @@
 ##
 
 declare GIT_REMOTE=${GIT_REMOTE:-"https://raw.githubusercontent.com"}
-declare GIT_BRANCH=${GIT_BRANCH:-"1.0.4"}
+declare GIT_BRANCH=${GIT_BRANCH:-"1.1.1"}
 declare SETUP_URL=${SETUP_URL:-""}
 
 if [ -z "$SETUP_URL" ]; then
