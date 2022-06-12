@@ -30,8 +30,8 @@ elif which aria2c >/dev/null 2>&1; then
   if aria2c -o bpkg-setup.sh "$SETUP_URL"  "$@"; then
     bash bpkg-setup.sh
   fi
-elif [ -x "$REQUET_FALLBACK_COMMAND" ]; then
-  "$REQUET_FALLBACK_COMMAND" "$@" "$SETUP_URL"
+elif [ -x "$REQUEST_FALLBACK_COMMAND" ]; then
+  "$REQUEST_FALLBACK_COMMAND" "$@" "$SETUP_URL"
 else
   echo >&2 "error: Could not fetch '$SETUP_URL'"
   exit 1
